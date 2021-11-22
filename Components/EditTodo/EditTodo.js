@@ -1,27 +1,31 @@
 import React, { useState } from "react";
-import { StyleSheet, Text, View, TextInput, Button } from "react-native";
+import { View, TextInput, Button } from "react-native";
+import styles from "./styles.js";
 
 const EditTodo = (props) => {
-  const { taskName, index } = props.route.params;
+  const { taskName } = props.route.params;
   const [text, onChangeText] = useState(taskName);
-  const editTask = () => {
+
+  const editTask = (index) => {
     let newTodos = [...props.todos];
     newTodos[index] = text;
     props.setTodos(newTodos);
     props.navigation.goBack("");
   };
+
   return (
-    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+    <View style={styles.container}>
       <TextInput
         onChangeText={onChangeText}
         value={text}
-        style={{ borderWidth: 1, height: 40, margin: 12, padding: 10 }}
+        style={styles.TextInputBox}
       ></TextInput>
-      <Button title={"Submit"} onPress={() => editTask()}></Button>
+      <Button
+        title={"Submit"}
+        onPress={() => editTask(props.todos.indexOf(taskName))}
+      ></Button>
     </View>
   );
 };
 
 export default EditTodo;
-
-const styles = StyleSheet.create({});

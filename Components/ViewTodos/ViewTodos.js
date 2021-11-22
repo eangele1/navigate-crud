@@ -1,6 +1,6 @@
 import React from "react";
-import { Pressable, Text, View, FlatList } from "react-native";
-import styles from "./Styles.js";
+import { Pressable, Text, View, FlatList, Dimensions } from "react-native";
+import styles from "./styles.js";
 
 const ViewTodos = (props) => {
   const deleteTask = (index) => {
@@ -8,35 +8,40 @@ const ViewTodos = (props) => {
     newTodos.splice(index, 1);
     props.setTodos(newTodos);
   };
-  const renderItem = ({ item, index }) => {
+  const renderItem = ({ item }) => {
     return (
       <Pressable
-        onLongPress={() => deleteTask(index)}
-        onPress={() =>
-          props.navigation.navigate("Edit", { taskName: item, index: index })
-        }
+        style={({ pressed }) => [{ opacity: pressed ? 0.5 : 1.0 }]}
+        onLongPress={() => deleteTask(props.todos.indexOf(item))}
+        onPress={() => props.navigation.navigate("Edit", { taskName: item })}
       >
-        <View>
+        <View style={styles.itemContainer}>
           <Text>{item}</Text>
         </View>
       </Pressable>
     );
   };
   return (
-    <View style={{ flex: 1, alignItems: "center" }}>
-      <Pressable
-        style={styles.button}
-        onPress={() => props.navigation.navigate("Add")}
-        onLongPress={() => alert("niiiiice")}
-      >
-        <Text style={styles.buttonText}>Press Me</Text>
-      </Pressable>
+    <View style={styles.container}>
+      <View style={styles.addTaskContainer}>
+        <Pressable
+          style={({ pressed }) => [
+            { opacity: pressed ? 0.5 : 1.0 },
+            styles.button,
+          ]}
+          onPress={() => props.navigation.navigate("Add")}
+        >
+          <Text style={styles.buttonText}>Add Task</Text>
+        </Pressable>
+      </View>
 
-      <FlatList
-        data={props.todos}
-        renderItem={renderItem}
-        keyExtractor={(item, index) => index}
-      ></FlatList>
+      <View style={styles.listContainer}>
+        <FlatList
+          data={props.todos}
+          renderItem={renderItem}
+          keyExtractor={(item) => props.todos.indexOf(item)}
+        ></FlatList>
+      </View>
     </View>
   );
 };
