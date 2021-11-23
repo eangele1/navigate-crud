@@ -8,6 +8,7 @@ const ViewTodos = (props) => {
     newTodos.splice(index, 1);
     props.setTodos(newTodos);
   };
+
   const renderItem = ({ item }) => {
     return (
       <Pressable
@@ -21,6 +22,7 @@ const ViewTodos = (props) => {
       </Pressable>
     );
   };
+
   return (
     <View style={styles.container}>
       <View style={styles.addTaskContainer}>
