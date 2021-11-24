@@ -1,16 +1,15 @@
 import React, { useState } from "react";
-import { View, TextInput, Button } from "react-native";
+import { View, TextInput, Button, Vibration } from "react-native";
 import styles from "./styles.js";
 
 const EditTodo = (props) => {
   const { taskName } = props.route.params;
   const [text, onChangeText] = useState(taskName);
 
-  const editTask = (index) => {
-    let newTodos = [...props.todos];
-    newTodos[index] = text;
-    props.setTodos(newTodos);
-    props.navigation.goBack("");
+  const editTask = (arr, index, item) => {
+    let newTodos = [...arr];
+    newTodos[index] = item;
+    return newTodos;
   };
 
   return (
@@ -22,7 +21,13 @@ const EditTodo = (props) => {
       ></TextInput>
       <Button
         title={"Submit"}
-        onPress={() => editTask(props.todos.indexOf(taskName))}
+        onPress={() => {
+          props.setTodos(
+            editTask(props.todos, props.todos.indexOf(taskName), text)
+          );
+          Vibration.vibrate(100);
+          props.navigation.goBack("");
+        }}
       ></Button>
     </View>
   );

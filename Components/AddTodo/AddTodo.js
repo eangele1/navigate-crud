@@ -1,13 +1,13 @@
 import React, { useState } from "react";
-import { View, TextInput, Button } from "react-native";
+import { View, TextInput, Button, Vibration } from "react-native";
 import styles from "./styles";
 
 const AddTodo = (props) => {
   const [text, onChangeText] = useState("");
 
-  const addTask = () => {
-    props.setTodos([...props.todos, text]);
-    props.navigation.goBack("");
+  const addTask = (arr, item) => {
+    const newTodos = [...arr, item];
+    return newTodos;
   };
 
   return (
@@ -17,7 +17,14 @@ const AddTodo = (props) => {
         value={text}
         style={styles.TextInputBox}
       ></TextInput>
-      <Button title={"Add"} onPress={() => addTask()}></Button>
+      <Button
+        title={"Add"}
+        onPress={() => {
+          props.setTodos(addTask(props.todos, text));
+          Vibration.vibrate(100);
+          props.navigation.goBack("");
+        }}
+      ></Button>
     </View>
   );
 };

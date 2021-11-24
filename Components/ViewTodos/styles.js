@@ -23,7 +23,8 @@ const styles = StyleSheet.create({
   addTaskContainer: {
     flex: 1,
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "space-around",
+    flexDirection: "row",
   },
   listContainer: {
     width: width,
